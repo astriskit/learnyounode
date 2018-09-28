@@ -3,7 +3,7 @@
 // "data" event from the response to a new line on the console(stdout).
 
 function getUrlFromCmdLine() {
-  // gets filename from the command line.
+  // gets URL from the command line.
   return process.argv[2] || "";
 }
 
