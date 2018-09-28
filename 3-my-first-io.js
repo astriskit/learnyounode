@@ -16,11 +16,11 @@ function getFilePathFromCmdLine() {
   return process.argv[2] || undefined;
 }
 
-function getCountOfFile() {
+function getLinesCountOfFile() {
   return countLines(getFileContents(getFilePathFromCmdLine()));
 }
 
-let lines = getCountOfFile();
+let lines = getLinesCountOfFile();
 lines -= 1; // fix as hinted. B'coz the test file has no "\n" at the last line.
 
 console.log(lines);
