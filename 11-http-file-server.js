@@ -9,7 +9,7 @@
 // stream the file contents to the response.
 
 function getPathAndPortFromCmdLine() {
-  // gets port number from the command line.
+  // gets port number & file path from the command line.
   return { path: process.argv[3], port: process.argv[2] };
 }
 
