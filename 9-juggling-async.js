@@ -9,7 +9,7 @@
 //     command - line arguments.
 
 function getUrlsFromCmdLine() {
-  // gets URL from the command line.
+  // gets URLs from the command line.
   return process.argv.slice(2);
 }
 
