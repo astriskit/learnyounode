@@ -9,19 +9,19 @@ function getPortFromCmdLine() {
   return process.argv[2];
 }
 
-function upperCase(targetString) {
-  return targetString.toUpperCase();
-}
-
 function httpUpperCaserer() {
   let { createServer } = require("http");
+  let { Transform } = require("stream");
+  let transformToUpperCase = new Transform({
+    transform(chunk, encoding, callback) {
+      callback(null, chunk.toString().toUpperCase());
+    }
+  });
   let server = createServer(function(req, response) {
-    console.log("req", req);
     if (req.method === "POST") {
-      console.log("Method is post");
-      response.end("success request");
+      req.pipe(transformToUpperCase).pipe(response);
     } else {
-      response.writeHead(404, "No route found!");
+      response.writeHead(404);
       response.end();
     }
   });
