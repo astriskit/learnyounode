@@ -13,22 +13,37 @@ function getUrlsFromCmdLine() {
   return process.argv.slice(2);
 }
 
-function getDataFromUrl(url, onDataFinished) {
+function getDataFromUrls(urls, onFinished) {
   let { get: httpGet } = require("http");
-  httpGet(url, response => {
-    response.setEncoding("utf8");
-    let urlContent = "";
-    response.on("data", data => (urlContent += data));
-    response.on("end", () => onDataFinished(urlContent));
+  let contents = [...urls],
+    finishCounter = 0;
+  urls.forEach((url, index) => {
+    httpGet(url, response => {
+      response.setEncoding("utf8");
+      let urlContent = "";
+      response.on("data", data => {
+        urlContent += data;
+      });
+      response.on("end", () => {
+        finishCounter += 1;
+        contents[index] = urlContent;
+        if (finishCounter === urls.length) {
+          onFinished(contents);
+        }
+      });
+    });
   });
 }
 
-function printData(content) {
-  console.log(content.length);
-  console.log(content);
+function printData(contents) {
+  contents.forEach(content => {
+    console.log(content);
+  });
 }
 
 function jugglingAsync() {
   let urlList = getUrlsFromCmdLine();
-  let urlsContent = [].fill("", 0, urlList.length);
+  getDataFromUrls(urlList, printData);
 }
+
+jugglingAsync();
